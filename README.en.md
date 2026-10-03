@@ -67,6 +67,33 @@ Two dependencies, both pure Python — nothing to compile:
 | python-pptx | reading `.pptx` decks |
 | pypdf | reading `.pdf` handouts |
 
+## Install as an agent skill
+
+The repository is also an agent skill (`SKILL.md` at the root). Installed into
+Codex, Claude Code, or a similar tool, it fires on requests like "turn these
+slides into revision notes" without you naming it.
+
+```bash
+# option 1: the skills registry (detects which AI tools you have)
+npx skills add jett-jia/ppt-review-helper
+
+# option 2: Codex's bundled skill-installer
+python ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo jett-jia/ppt-review-helper --path . --name ppt-review-helper
+```
+
+Option 3 is manual: clone the repository and drop the whole directory into your
+skills folder (`~/.codex/skills/` for Codex).
+
+The skill is only a wrapper — the actual work is done by the Python package in
+this repository, so **install the Python dependencies too**:
+
+```bash
+pip install -r requirements.txt
+```
+
+Restart your AI tool afterwards, or start a new conversation.
+
 ## Usage
 
 ```bash

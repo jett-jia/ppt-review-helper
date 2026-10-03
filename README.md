@@ -54,7 +54,7 @@
 需要 Python 3.10 或更高版本。
 
 ```bash
-git clone <你的仓库地址>
+git clone https://github.com/jett-jia/ppt-review-helper
 cd ppt-review-helper
 pip install -r requirements.txt
 ```
@@ -65,6 +65,33 @@ pip install -r requirements.txt
 | --- | --- |
 | python-pptx | 读取 .pptx 课件 |
 | pypdf | 读取 .pdf 课件 |
+
+## 装成 AI 助手的 Skill
+
+这个仓库同时是一个 Agent Skill（根目录的 `SKILL.md`）。装进 Codex、Claude Code
+这类工具后，你可以直接说"把这份课件整理成复习笔记",它会自动匹配到这个技能。
+
+三种装法，任选一种：
+
+```bash
+# 一、用技能市场（推荐，会自动识别你装了哪些 AI 工具）
+npx skills add jett-jia/ppt-review-helper
+
+# 二、用 Codex 自带的 skill-installer
+python ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
+  --repo jett-jia/ppt-review-helper --path . --name ppt-review-helper
+```
+
+三是手动：把仓库克隆下来，整个目录放进技能目录（Codex 是 `~/.codex/skills/`）。
+
+注意：技能本身只是一层封装，实际干活的是仓库里的 Python 代码，所以**装完技能后
+仍然要装 Python 依赖**，否则技能启动时会提示缺包：
+
+```bash
+pip install -r requirements.txt
+```
+
+装完重启 AI 工具，或者新开一次对话。
 
 ## 使用
 
