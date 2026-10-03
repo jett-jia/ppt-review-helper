@@ -1,0 +1,15 @@
+# 默认按文本处理并统一换行符
+* text=auto
+
+# 这些是二进制文件，禁止 git 做换行符转换，否则文件会损坏
+*.pdf binary
+*.pptx binary
+*.docx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# 示例输出是生成物，diff 里不展开
+demo/sample_output/*.md -diff linguist-generated

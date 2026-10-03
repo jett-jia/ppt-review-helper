@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 工具默认输出目录
+output/
+
+# 编辑器
+.vscode/
+.idea/
+.DS_Store

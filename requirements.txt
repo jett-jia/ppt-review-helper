@@ -1,0 +1,6 @@
+# 运行时依赖：只装这两个就够了
+python-pptx>=1.0.0
+pypdf>=4.0.0
+
+# 说明：reportlab 只在运行 demo/make_demo.py 生成示例 PDF 时需要，
+# 正常使用本工具不必安装，所以没有写进上面的依赖里。
