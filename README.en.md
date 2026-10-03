@@ -164,8 +164,14 @@ Issues and pull requests are welcome. Useful directions:
 - `.docx` support (one function in `parsers.py`)
 - extracting text from tables
 
-Before submitting, check that
-`python -m ppt_review demo/计算机网络_第3章_传输层.pptx --stdout` still runs.
+Before submitting, run the self-check. It pushes the sample decks through the
+whole pipeline and asserts that cleaning and classification still work:
+
+```bash
+python tests/test_pipeline.py
+```
+
+Plain stdlib asserts — no pytest required.
 
 ## License
 

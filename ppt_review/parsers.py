@@ -23,13 +23,7 @@ class Page:
     """课件里的一页：PPT 的一页幻灯片，或 PDF 的一页纸。"""
 
     index: int  # 页码，从 1 开始
-    title: str = ""  # 推测出来的标题
     blocks: list[str] = field(default_factory=list)  # 这一页的正文文本块
-
-    @property
-    def is_empty(self) -> bool:
-        """这一页是不是没有任何文字。"""
-        return not self.blocks
 
 
 def _squeeze(text: str) -> str:
@@ -59,21 +53,11 @@ def parse_pptx(path: Path) -> list[Page]:
                 if line:
                     blocks.append(line)
 
-        # 标题猜测：优先用版式自带的标题占位符
-        title = ""
-        title_shape = slide.shapes.title
-        if title_shape is not None and title_shape.has_text_frame:
-            title = _squeeze(title_shape.text_frame.text)
+        # 首块通常是本页标题或章节名（如"3.1 传输层概述"），不是考点，丢掉。
+        # ponytail: 只按位置丢首块；遇到标题不在首位的版式再改成按占位符判断。
+        blocks = blocks[1:]
 
-        # 取不到标题占位符时，退而用第一个文本块当标题
-        if not title and blocks:
-            title = blocks[0]
-
-        # 标题如果就是从正文里拿的，就别在正文里重复一遍
-        if blocks and blocks[0] == title:
-            blocks = blocks[1:]
-
-        pages.append(Page(index=page_no, title=title, blocks=blocks))
+        pages.append(Page(index=page_no, blocks=blocks))
 
     return pages
 
@@ -92,9 +76,9 @@ def parse_pdf(path: Path) -> list[Page]:
         lines = [_squeeze(line) for line in raw_text.splitlines()]
         lines = [line for line in lines if line]
 
-        title = lines[0] if lines else ""
-        body = lines[1:] if lines else []
-        pages.append(Page(index=page_no, title=title, blocks=body))
+        # 首行通常是页眉或本页标题，丢掉
+        # ponytail: 同样按位置丢，PDF 里没有可靠的结构信息可判断
+        pages.append(Page(index=page_no, blocks=lines[1:]))
 
     return pages
 

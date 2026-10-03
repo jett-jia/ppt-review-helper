@@ -178,8 +178,13 @@ python -m ppt_review demo/计算机网络_第3章_传输层.pptx -o demo/sample_
 - 支持 .docx 课件（`parsers.py` 里加一个函数即可）
 - 支持表格里的文字提取
 
-提交前请确认 `python -m ppt_review demo/计算机网络_第3章_传输层.pptx --stdout`
-能正常跑通。
+提交前请先跑一遍自检，它会用示例课件走完整条流水线并断言清洗与分类生效：
+
+```bash
+python tests/test_pipeline.py
+```
+
+只用标准库的 assert，不需要 pytest。
 
 ## 开源协议
 

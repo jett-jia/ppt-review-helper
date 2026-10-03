@@ -4,8 +4,7 @@
 做四件事：
 1. 去掉页码、"第 X 页"、"版权所有"这类装饰文字；
 2. 去掉"谢谢观看""本章结束"这类不含知识点的收尾页；
-3. 去掉跨页重复出现的页眉页脚（同一段文字在很多页顶端重复）；
-4. 把被排版拆断的句子重新接起来。
+3. 去掉跨页重复出现的页眉页脚（同一段文字在很多页顶端重复）。
 """
 
 from __future__ import annotations
@@ -43,10 +42,6 @@ NOISE_PATTERNS = [
 # 短于这个长度、且没有任何中英文数字的块直接丢掉
 MIN_BLOCK_LENGTH = 2
 
-# 一页最多保留多少个文本块（防止某页塞了整章文字把输出撑爆）
-MAX_BLOCKS_PER_PAGE = 60
-
-
 def _is_noise_line(line: str) -> bool:
     """判断单个文本块是不是装饰文字。"""
     stripped = line.strip()
@@ -81,23 +76,6 @@ def _find_repeated_headers(pages: list[Page]) -> set[str]:
     }
 
 
-def _merge_broken_lines(blocks: list[str]) -> list[str]:
-    """把被排版拆断的句子接起来。
-
-    课件里常见这种情况：
-        时延是指数据从网络一端传送到另一端所需要的
-        时间，也叫延迟。
-    上一段以逗号、顿号、分号或"的"结尾时，通常说明话还没说完。
-    """
-    merged: list[str] = []
-    for block in blocks:
-        if merged and re.search(r"[，,、；;]$|的$", merged[-1]):
-            merged[-1] = merged[-1] + block
-        else:
-            merged.append(block)
-    return merged
-
-
 def clean_pages(pages: list[Page]) -> list[Page]:
     """清洗页列表，返回新的 Page 列表（不修改传入的对象）。"""
     repeated = _find_repeated_headers(pages)
@@ -109,12 +87,10 @@ def clean_pages(pages: list[Page]) -> list[Page]:
             for block in page.blocks
             if not _is_noise_line(block) and block not in repeated
         ]
-        kept = _merge_broken_lines(kept)[:MAX_BLOCKS_PER_PAGE]
-
         if not kept:
             # 整页都是装饰文字（封面、致谢、章节过渡页常常如此），直接跳过
             continue
 
-        cleaned.append(Page(index=page.index, title=page.title, blocks=kept))
+        cleaned.append(Page(index=page.index, blocks=kept))
 
     return cleaned
