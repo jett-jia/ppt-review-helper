@@ -88,6 +88,7 @@ python -m ppt_review lecture.pptx --only 名词解释
 | `--format` | `all` (default) / `review` / `mindmap` |
 | `--title` | Markdown H1, defaults to the file name |
 | `--stdout` | print to the terminal instead of writing files |
+| `--version` | print the version number |
 
 The `--only` values are Chinese because they map onto the five Chinese bucket
 names the classifier produces.

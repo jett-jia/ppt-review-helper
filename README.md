@@ -91,6 +91,7 @@ python -m ppt_review 课件.pptx --only 名词解释
 | `--format` | `all`（默认）/ `review`（只出复习笔记）/ `mindmap`（只出思维导图） |
 | `--title` | Markdown 一级标题，默认用文件名 |
 | `--stdout` | 只打印到终端，不写文件 |
+| `--version` | 打印版本号 |
 
 几个真实场景：
 

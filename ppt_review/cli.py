@@ -13,6 +13,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from . import __version__
 from .cleaner import clean_pages
 from .extractor import extract_points
 from .parsers import read_document
@@ -49,6 +50,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--stdout", action="store_true",
         help="只把复习笔记打印到终端，不写文件",
+    )
+    parser.add_argument(
+        "--version", action="version", version=f"ppt-review {__version__}",
     )
     return parser
 
